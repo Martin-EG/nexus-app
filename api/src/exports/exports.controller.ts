@@ -25,7 +25,6 @@ export class ExportsController {
 
   @Get('csv')
   csv(@Query() query: Record<string, string>) {
-    // app.py checked require_admin against the query string.
     if (!this.authService.requireAdmin(query)) {
       throw new ForbiddenException('forbidden');
     }

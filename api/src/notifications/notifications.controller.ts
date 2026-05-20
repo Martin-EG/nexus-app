@@ -37,7 +37,6 @@ export class NotificationsController {
 
   @Post('broadcast')
   broadcast(@Body() body: BroadcastDto) {
-    // app.py returned 403 at the route level before delegating.
     if (!this.authService.requireAdmin(body)) {
       throw new ForbiddenException('forbidden');
     }

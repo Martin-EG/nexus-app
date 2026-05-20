@@ -14,16 +14,12 @@ export type PricingHook = (
 export class FinanceService {
   readonly USD_MXN_RATE = 17.5;
 
-  // app.py kept `_PRICING_HOOKS` as a module-global list; finance.py appended
-  // the IVA hook to it on import. Here the list lives on the singleton service
-  // and is seeded in the constructor.
   private readonly pricingHooks: PricingHook[] = [];
 
   constructor() {
     this.pricingHooks.push((amount) => this.round2(amount * 0.16));
   }
 
-  /** Register an extra pricing hook (kept for parity with the hook pattern). */
   registerPricingHook(hook: PricingHook): void {
     this.pricingHooks.push(hook);
   }

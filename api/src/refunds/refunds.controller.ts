@@ -21,7 +21,6 @@ export class RefundsController {
 
   @Post()
   create(@Body() body: CreateRefundDto) {
-    // app.py passed the whole JSON body as `customer_data`.
     return this.refundsService.createRefund(body.sale_id, body.reason, body);
   }
 

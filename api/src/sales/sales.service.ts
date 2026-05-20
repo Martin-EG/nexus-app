@@ -51,7 +51,6 @@ export class SalesService {
     const iva = this.financeService.calcIva(discounted);
     const total = this.financeService.roundAmount(discounted + iva);
 
-    // sales.py stored `discounted` in the subtotal column.
     const sale = await this.sales.save(
       this.sales.create({
         userId,

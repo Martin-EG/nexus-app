@@ -21,7 +21,6 @@ export class NotificationsService {
     private readonly authService: AuthService,
   ) {}
 
-  /** Was a string-concatenated query (SQL injection); `userId` is now bound. */
   async listForUser(userId: number): Promise<Notification[]> {
     const cached = this.notifCache.get(userId);
     if (cached && cached.length > 0) {
@@ -107,7 +106,6 @@ export class NotificationsService {
     return { id: notifId, deleted: true };
   }
 
-  /** Non-route helper (SQL injection fixed). */
   async countUnread(
     userId: number,
   ): Promise<{ user_id: number; unread: number }> {
@@ -117,12 +115,10 @@ export class NotificationsService {
     return { user_id: userId, unread };
   }
 
-  /** Non-route helper (SQL injection fixed). */
   searchByKind(userId: number, kind: string): Promise<Notification[]> {
     return this.notifications.find({ where: { userId, kind } });
   }
 
-  /** Non-route helper (SQL injection fixed). */
   latestForUser(userId: number, limit: number): Promise<Notification[]> {
     return this.notifications.find({
       where: { userId },
@@ -131,7 +127,6 @@ export class NotificationsService {
     });
   }
 
-  /** Non-route helper (SQL injection fixed). */
   listByStatus(status: string): Promise<Notification[]> {
     return this.notifications.find({ where: { status } });
   }

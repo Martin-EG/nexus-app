@@ -28,8 +28,6 @@ export class Sale {
   @Column({ name: 'last_touch_at', type: 'timestamptz', nullable: true })
   lastTouchAt!: Date | null;
 
-  // The Flask code stored a "dd/mm/yyyy" string here; on Postgres this is a
-  // proper timestamp managed by TypeORM.
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;
 }

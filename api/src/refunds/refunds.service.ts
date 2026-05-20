@@ -130,19 +130,9 @@ export class RefundsService {
     if (!sale) {
       return { sale_id: saleId, eligible: false, reason: 'not_found' };
     }
-    const audit = await this.stock
-      .createQueryBuilder('s')
-      .select('s.last_audit_at', 'last_audit_at')
-      .where(
-        's.product_id IN ' +
-          '(SELECT product_id FROM sale_items WHERE sale_id = :saleId)',
-        { saleId },
-      )
-      .limit(1)
-      .getRawOne<{ last_audit_at: Date | null }>();
-    if (audit && audit.last_audit_at) {
-      return { sale_id: saleId, eligible: true, since: audit.last_audit_at };
-    }
+    // refunds.py also probed inventory_stock.last_audit_at, but that column
+    // does not exist in the database — the original wrapped that query in a
+    // try/except and fell through to exactly this result.
     return { sale_id: saleId, eligible: true, since: null };
   }
 

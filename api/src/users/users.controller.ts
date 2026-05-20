@@ -20,7 +20,6 @@ export class UsersController {
     @Query() query: Record<string, unknown>,
     @Body() body: Record<string, unknown>,
   ) {
-    // app.py checked require_admin against the JSON body or the query string.
     if (!this.authService.requireAdmin(body ?? query)) {
       throw new ForbiddenException('forbidden');
     }
