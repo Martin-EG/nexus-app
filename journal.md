@@ -8,4 +8,8 @@ Para comenzar nuestra migracion el primer paso sera decidir donde migrar los dat
 Comenzar migrando backend; Nuestor objetivo es utilizar Node + Typescript para el backend asi que en vez de utilizar NodeJs vanilla, utilizaremos NestJs, un framework de NodeJs el cual de inicio tiene una mejor estructura para comenzar. Esto nos servira a largo plazo para poder mantener una estructura clara y facil de mantener.
 
 **20/05/26 12:21 am**
-Comenzamos migrando el servicio de auth, dato que el actual sistema legacy no cuenta con seguridad al momento de hacer login (datos se guardan como se obtienen sin hashear ni nada) vamos a implementar JWT tokens
+Comenzamos migrando el servicio de auth, dato que el actual sistema legacy no cuenta con seguridad al momento de hacer login (datos se guardan como se obtienen sin hashear ni nada) vamos a implementar JWT 
+
+**20/05/26 1:33 am**
+Utilizando Claude code pude acelerar el entendimiento y migracion de los distintos servicios dentro de la aplicacion legacy, agilizando todo el flujo considerando el tiempo que se tiene.
+
