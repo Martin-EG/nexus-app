@@ -4,6 +4,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config as loadEnv } from 'dotenv';
+import { CatalogModule } from './catalog/catalog.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { SalesModule } from './sales/sales.module';
+import { PurchasesModule } from './purchases/purchases.module';
+import { ReportsModule } from './reports/reports.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { RefundsModule } from './refunds/refunds.module';
+import { ExportsModule } from './exports/exports.module';
+import { UsersModule } from './users/users.module';
+import { HealthModule } from './health/health.module';
 
 loadEnv({ path: '.env.local' });
 
@@ -24,6 +34,16 @@ loadEnv({ path: '.env.local' });
       synchronize: false, // Use migrations in production
     }),
     AuthModule,
+    CatalogModule,
+    InventoryModule,
+    SalesModule,
+    PurchasesModule,
+    ReportsModule,
+    NotificationsModule,
+    RefundsModule,
+    ExportsModule,
+    UsersModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
