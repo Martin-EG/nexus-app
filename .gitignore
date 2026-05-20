@@ -1,0 +1,9 @@
+.claude
+
+api/node_modules
+api/dist
+api/build
+api/.env.local
+
+node_modules
+dist
