@@ -1,8 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity'
+import * as bcrypt from 'bcrypt';
+import { User } from '../users/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
+
+const BCRYPT_ROUNDS = 10;
 
 @Injectable()
 export class AuthService {
@@ -22,8 +25,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid username or password');
     }
 
-
-    if (user.password !== password) {
+    if (!(await this.verifyPassword(user, password))) {
       throw new UnauthorizedException('Invalid username or password');
     }
 
@@ -34,7 +36,33 @@ export class AuthService {
     };
   }
 
+  hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, BCRYPT_ROUNDS);
+  }
+
   requireAdmin(user: any): boolean {
     return user?.is_admin ?? false;
+  }
+
+  private async verifyPassword(
+    user: User,
+    password: string,
+  ): Promise<boolean> {
+    if (this.isBcryptHash(user.password)) {
+      return bcrypt.compare(password, user.password);
+    }
+
+    // Legacy plaintext password.
+    if (user.password !== password) {
+      return false;
+    }
+    await this.usersRepository.update(user.id, {
+      password: await bcrypt.hash(password, BCRYPT_ROUNDS),
+    });
+    return true;
+  }
+
+  private isBcryptHash(value: string): boolean {
+    return /^\$2[aby]\$\d{2}\$/.test(value);
   }
 }
