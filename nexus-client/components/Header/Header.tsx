@@ -6,15 +6,15 @@ import Link from 'next/link';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/catalogo', label: 'Catálogo' },
-  { href: '/inventario', label: 'Inventario' },
-  { href: '/carrito', label: 'Carrito' },
-  { href: '/ventas', label: 'Ventas' },
-  { href: '/compras', label: 'Compras' },
-  { href: '/reportes', label: 'Reportes' },
-  { href: '/notificaciones', label: 'Notificaciones' },
-  { href: '/devoluciones', label: 'Devoluciones' },
-  { href: '/exportes', label: 'Exportes' },
+  { href: '/dashboard/catalogo', label: 'Catálogo' },
+  { href: '/dashboard/inventario', label: 'Inventario' },
+  { href: '/dashboard/carrito', label: 'Carrito' },
+  { href: '/dashboard/ventas', label: 'Ventas' },
+  { href: '/dashboard/compras', label: 'Compras' },
+  { href: '/dashboard/reportes', label: 'Reportes' },
+  { href: '/dashboard/notificaciones', label: 'Notificaciones' },
+  { href: '/dashboard/devoluciones', label: 'Devoluciones' },
+  { href: '/dashboard/exportes', label: 'Exportes' },
 ];
 
 const linkClass =
