@@ -12,7 +12,8 @@
 - ~~Migrate and implement reports service~~
 - ~~Migrate and implement sales service~~
 
-- Add unit tests for each of the services.
+- ~~Add unit tests for each of the services.~~
+- ~~Add Backend README.md file~~
 
 
 **Frotend**

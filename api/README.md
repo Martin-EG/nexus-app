@@ -1,98 +1,141 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Nexus API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend for the Nexus app — a distribution/ERP-style service covering catalog,
+inventory, sales, purchases, reports, notifications, refunds and exports.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+It is a [NestJS](https://nestjs.com/) + [TypeORM](https://typeorm.io/)
+application backed by a Supabase (PostgreSQL) database. It was migrated from an
+earlier Flask prototype; every route now lives under the `/api` prefix.
 
-## Description
+## Tech stack
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **NestJS 11** — modules, controllers, services, dependency injection
+- **TypeORM** — entities and repositories over PostgreSQL
+- **Supabase Postgres** — connection pooler for the app, direct connection for migrations
+- **Passport / JWT** — auth strategy
+- **Jest** — unit tests (one `*.spec.ts` per service)
 
-## Project setup
+## Project structure
 
-```bash
-$ npm install
+```
+api/
+├── src/
+│   ├── app.module.ts        # Root module — wires every feature module + TypeORM
+│   ├── main.ts              # Bootstrap; sets the global `/api` prefix
+│   ├── data-source.ts       # Standalone TypeORM DataSource for the CLI (migrations)
+│   ├── auth/                # Login + JWT strategy + admin guard
+│   ├── catalog/             # Products
+│   ├── inventory/           # Stock levels and warehouse views
+│   ├── sales/               # Sales and returns
+│   ├── purchases/           # Purchases, reconciliation, suppliers
+│   ├── reports/             # Monthly / total / export reports
+│   ├── notifications/       # Per-user notifications + broadcast
+│   ├── refunds/             # Refund creation and approval
+│   ├── exports/             # Pivot, CSV and aggregate exports
+│   ├── finance/             # Shared pricing logic (IVA, discounts, currency)
+│   ├── email/               # Email service (stub)
+│   ├── users/               # User listing (admin)
+│   ├── health/              # Health check
+│   └── migrations/          # TypeORM migration files
+└── test/                    # End-to-end tests
 ```
 
-## Compile and run the project
+Each feature folder follows the same layout: an `entities/` folder, a
+`*.service.ts` (business logic), a `*.controller.ts` (HTTP routes), a
+`*.module.ts` (wiring) and a `*.service.spec.ts` (unit tests).
 
-```bash
-# development
-$ npm run start
+## Requirements
 
-# watch mode
-$ npm run start:dev
+- Node.js 20+
+- npm
+- Access to the Supabase PostgreSQL database (the tables are already created
+  and seeded)
 
-# production mode
-$ npm run start:prod
+## Configuration
+
+The app reads environment variables from `api/.env.local`. **This file is
+git-ignored and must not be committed** — it contains database credentials.
+
+Create `api/.env.local` with the following keys (values shown are placeholders):
+
+```dotenv
+# Supabase project
+SUPABASE_APP_NAME="nexus-app"
+NEXT_PUBLIC_SUPABASE_URL="https://<project-ref>.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="<publishable-key>"
+
+# Pooled connection — used by the running app
+DATABASE_URL="postgresql://<user>:<password>@<pooler-host>:6543/postgres?pgbouncer=true"
+
+# Direct connection — used for migrations
+DIRECT_URL="postgresql://<user>:<password>@<pooler-host>:5432/postgres"
+
+# Auth
+JWT_SECRET="<jwt-signing-secret>"
+
+# Discrete DB settings consumed by the app's TypeORM config
+DB_HOST="<pooler-host>"
+DB_PORT="6543"
+DB_USER="<user>"
+DB_PASSWORD="<password>"
+DB_NAME="postgres"
+
+# Optional — HTTP port (defaults to 3000)
+# PORT="3000"
 ```
 
-## Run tests
+Notes:
+
+- The running app connects through the **pooled** connection (`DB_*`, port
+  `6543`) with SSL.
+- The TypeORM CLI (migrations) uses **`DIRECT_URL`** (port `5432`), the
+  non-pooled connection Supabase recommends for DDL.
+- Ask a maintainer for the real values — never paste credentials into the repo,
+  issues, or chat.
+
+## Running
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cd api
+npm install        # install dependencies
+npm run start:dev  # start in watch mode on http://localhost:3000
 ```
 
-## Deployment
+All endpoints are served under `/api` — e.g. `GET http://localhost:3000/api/health`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## Useful scripts
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+| Command | What it does |
+|---|---|
+| `npm run start:dev` | Start the server in watch mode (reloads on change) |
+| `npm run start` | Start the server once |
+| `npm run start:prod` | Run the compiled build from `dist/` |
+| `npm run build` | Compile TypeScript to `dist/` |
+| `npm test` | Run the Jest unit test suite |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:cov` | Run tests with a coverage report |
+| `npm run test:e2e` | Run end-to-end tests |
+| `npm run lint` | Lint and auto-fix with ESLint |
+| `npm run format` | Format sources with Prettier |
+| `npm run migration:run` | Apply pending TypeORM migrations |
+| `npm run migration:revert` | Roll back the last migration |
+| `npm run migration:generate` | Generate a migration from entity changes |
+
+## Database & migrations
+
+The Supabase database already contains the schema and seed data, so a fresh
+checkout does **not** need to run migrations to get started.
+
+Migrations live in `src/migrations/` and run against `DIRECT_URL`. Only run
+`npm run migration:run` when you have new, unapplied migrations — applying a
+migration that recreates existing tables will fail.
+
+## Testing
+
+Every service has a co-located `*.spec.ts` file. Tests mock their dependencies
+(repositories, other services), so **no database connection is required** to
+run them:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm test
 ```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

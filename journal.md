@@ -23,4 +23,13 @@ According to @api/app.py  and @api/src/finance/finance.py  @api/src/exports/expo
 ```
 
 **20/05/26 2:13 am**
-Para finalizar con la migracion del backend comenzamos generando pruebas unitarias para cada servicio.
+Para finalizar con la migracion del backend comenzamos generando pruebas unitarias para cada servicio, con la ayuda de Claude code siguiendola misma estructura de nuestro primer spec file.
+```
+Create spec file for each service using the same structure as @api/src/auth/auth.service.spec.ts
+```
+
+**20/05/26 2:53am**
+Agregamos un README.md a nuestro proyecto de backend.
+```
+Create a readme .md file for API folder, what makes the project, structure, how to make it run, needed data (without making keys visible), useful scripts like npm run start:dev and npm run test
+```
