@@ -4,6 +4,26 @@ import { authOptions } from '@/lib/auth';
 
 const API_URL = process.env.API_URL ?? 'http://localhost:3000';
 
+/** GET /api/products/[id] — proxies a single product lookup. */
+export async function GET(
+  _request: Request,
+  ctx: RouteContext<'/api/products/[id]'>,
+) {
+  const { id } = await ctx.params;
+  try {
+    const res = await fetch(`${API_URL}/api/products/${id}`, {
+      cache: 'no-store',
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch {
+    return NextResponse.json(
+      { error: 'Unable to reach the Nexus API' },
+      { status: 502 },
+    );
+  }
+}
+
 export async function DELETE(
   _request: Request,
   ctx: RouteContext<'/api/products/[id]'>,
