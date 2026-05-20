@@ -27,3 +27,6 @@
 
 - ~~Check a11y in critical components (inputs and interactive components).~~
 - Add Unit tests for each component.
+- ~~Add readme.md file~~
+
+- ~~Add general readme.md at the root~~

@@ -22,8 +22,6 @@ const linkClass =
   'rounded-md px-3 py-1.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900';
 
 const Header = () => {
-  const { is_admin } = useUserStore((state) => state.user);
-
   const logout = () => {
     // Clears the NextAuth session, then redirects to the login page.
     signOut({ callbackUrl: '/login' });
@@ -40,7 +38,7 @@ const Header = () => {
 
         <AdminMiddleware>
           <Link
-            href="/reports?admin=true"
+            href="/dashboard/reports?admin=true"
             className="rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50"
           >
             Admin
