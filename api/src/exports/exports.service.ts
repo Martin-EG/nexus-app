@@ -20,6 +20,17 @@ const DIM_B: Record<string, string> = {
   warehouse_id: 'w.name',
 };
 
+// `sales.created_at` is a free-form text column (dd/mm/yyyy, ISO, or Unix
+// epoch seconds). This normalizes any of those to a timestamp so the value
+// works with EXTRACT and date comparisons.
+const SALE_CREATED_AT =
+  "(CASE " +
+  "WHEN s.created_at ~ '^[0-9]+$' THEN to_timestamp(s.created_at::bigint) " +
+  "WHEN s.created_at ~ '^[0-9]{4}-' THEN s.created_at::timestamptz " +
+  "WHEN s.created_at ~ '^[0-9]{2}/[0-9]{2}/[0-9]{4}' " +
+  "THEN to_date(s.created_at, 'DD/MM/YYYY')::timestamptz " +
+  'ELSE NULL END)';
+
 interface TotalsRow {
   qty: number;
   unit_price: number;
@@ -65,7 +76,7 @@ export class ExportsService {
           'ELSE SUM(si.qty * si.unit_price) END',
         'after_volume',
       )
-      .where('EXTRACT(YEAR FROM s.created_at) = :year', { year })
+      .where(`EXTRACT(YEAR FROM ${SALE_CREATED_AT}) = :year`, { year })
       .groupBy('dim_a')
       .addGroupBy('dim_b')
       .orderBy('dim_a', 'ASC')
@@ -126,7 +137,7 @@ export class ExportsService {
       .addSelect('si.unitPrice', 'unit_price')
       .addSelect('s.customerType', 'customer_type');
     if (filters.year) {
-      qb.andWhere('EXTRACT(YEAR FROM s.created_at) = :year', {
+      qb.andWhere(`EXTRACT(YEAR FROM ${SALE_CREATED_AT}) = :year`, {
         year: Number(filters.year),
       });
     }
@@ -178,7 +189,7 @@ export class ExportsService {
       .select('p.category', 'cat')
       .addSelect('COUNT(s.id)', 'n_sales')
       .addSelect('SUM(si.qty * si.unit_price)', 'gross')
-      .where('EXTRACT(YEAR FROM s.created_at) = :year', { year })
+      .where(`EXTRACT(YEAR FROM ${SALE_CREATED_AT}) = :year`, { year })
       .groupBy('p.category')
       .getRawMany();
   }
@@ -192,7 +203,7 @@ export class ExportsService {
       .select('sup.name', 'supplier')
       .addSelect('COUNT(s.id)', 'n_sales')
       .addSelect('SUM(si.qty * si.unit_price)', 'gross')
-      .where('EXTRACT(YEAR FROM s.created_at) = :year', { year })
+      .where(`EXTRACT(YEAR FROM ${SALE_CREATED_AT}) = :year`, { year })
       .groupBy('sup.name')
       .getRawMany();
   }
@@ -232,10 +243,14 @@ export class ExportsService {
       .addSelect('s.total', 'total')
       .addSelect('s.createdAt', 'created_at');
     if (from) {
-      qb.andWhere('s.created_at >= :from', { from: from.toISOString() });
+      qb.andWhere(`${SALE_CREATED_AT} >= :from::timestamptz`, {
+        from: from.toISOString(),
+      });
     }
     if (to) {
-      qb.andWhere('s.created_at <= :to', { to: to.toISOString() });
+      qb.andWhere(`${SALE_CREATED_AT} <= :to::timestamptz`, {
+        to: to.toISOString(),
+      });
     }
     return qb.getRawMany();
   }

@@ -33,8 +33,16 @@ export class ReportsService {
     private readonly stock: Repository<InventoryStock>,
   ) {}
 
-  monthlyReport(year: number, month: number): Promise<MonthlyReportRow[]> {
-    return this.sales
+  /**
+   * `created_at` is a free-form text column (dd/mm/yyyy, ISO, or epoch
+   * seconds), so the year/month filter is applied in JS via `parseAnyDate`
+   * rather than SQL `EXTRACT`, which only works on real date columns.
+   */
+  async monthlyReport(
+    year: number,
+    month: number,
+  ): Promise<MonthlyReportRow[]> {
+    const rows = await this.sales
       .createQueryBuilder('s')
       .innerJoin(SaleItem, 'si', 'si.sale_id = s.id')
       .innerJoin(Product, 'p', 'p.id = si.product_id')
@@ -63,9 +71,18 @@ export class ReportsService {
       .where('s.status IN (:...statuses)', {
         statuses: ['completed', 'COMPLETED', 'done'],
       })
-      .andWhere('EXTRACT(YEAR FROM s.created_at) = :year', { year })
-      .andWhere('EXTRACT(MONTH FROM s.created_at) = :month', { month })
       .getRawMany<MonthlyReportRow>();
+
+    return rows.filter((row) => {
+      const parsed = this.parseAnyDate(
+        row.created_at as unknown as string | number | null,
+      );
+      return (
+        parsed !== null &&
+        parsed.getUTCFullYear() === year &&
+        parsed.getUTCMonth() + 1 === month
+      );
+    });
   }
 
   async totalSales(year: number, month: number): Promise<number> {
