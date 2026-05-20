@@ -18,9 +18,12 @@
 
 **Frotend**
 - ~~Decide Framework and project's structure~~
-- Set up NextJS
-- Implement Zustand
-- Add core components
-- Create login page
-- Create Catalog page
-- Create Inventory page
+- ~~Set up NextJS~~
+- ~~Implement Zustand~~
+- ~~Add core components~~
+- ~~Create login page~~
+- ~~Create dashboard page~~
+- ~~Separate Header into its own component and render it with layout.tsx~~
+
+- Check a11y in critical components (inputs and interactive components).
+- Add Unit tests for each component.

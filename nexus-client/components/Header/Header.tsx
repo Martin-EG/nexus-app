@@ -3,18 +3,19 @@
 import { useUserStore } from '@/data/user';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import AdminMiddleware from '../AdminMiddleware';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/dashboard/catalogo', label: 'Catálogo' },
-  { href: '/dashboard/inventario', label: 'Inventario' },
-  { href: '/dashboard/carrito', label: 'Carrito' },
-  { href: '/dashboard/ventas', label: 'Ventas' },
-  { href: '/dashboard/compras', label: 'Compras' },
-  { href: '/dashboard/reportes', label: 'Reportes' },
-  { href: '/dashboard/notificaciones', label: 'Notificaciones' },
-  { href: '/dashboard/devoluciones', label: 'Devoluciones' },
-  { href: '/dashboard/exportes', label: 'Exportes' },
+  { href: '/dashboard/catalog', label: 'Catálogo' },
+  { href: '/dashboard/inventory', label: 'Inventario' },
+  { href: '/dashboard/cart', label: 'Carrito' },
+  { href: '/dashboard/sales', label: 'Ventas' },
+  { href: '/dashboard/purchases', label: 'Compras' },
+  { href: '/dashboard/reports', label: 'Reportes' },
+  { href: '/dashboard/notifications', label: 'Notificaciones' },
+  { href: '/dashboard/refunds', label: 'Devoluciones' },
+  { href: '/dashboard/exports', label: 'Exportes' },
 ];
 
 const linkClass =
@@ -37,14 +38,14 @@ const Header = () => {
           </Link>
         ))}
 
-        {is_admin && (
+        <AdminMiddleware>
           <Link
             href="/reports?admin=true"
             className="rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50"
           >
             Admin
           </Link>
-        )}
+        </AdminMiddleware>
 
         <button
           onClick={logout}

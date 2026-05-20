@@ -2,6 +2,7 @@
 
 import Table from '@/components/Table';
 import { useUserStore } from '@/data/user';
+import { formatDate } from '@/lib/format-date';
 import { useEffect, useState } from 'react';
 
 type Sale = {
@@ -90,7 +91,7 @@ const Ventas = () => {
     Subtotal: `$${sale.subtotal}`,
     Total: `$${sale.total}`,
     Estado: sale.status,
-    Fecha: new Date(sale.createdAt).toLocaleDateString(),
+    Fecha: formatDate(sale.createdAt),
     Acciones: (
       <button
         onClick={() => openRefund(sale)}
