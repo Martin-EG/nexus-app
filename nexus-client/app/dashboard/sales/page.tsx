@@ -3,6 +3,7 @@
 import Table from '@/components/Table';
 import { useUserStore } from '@/data/user';
 import { formatDate } from '@/lib/format-date';
+import { useModal } from '@/lib/use-modal';
 import { useEffect, useState } from 'react';
 
 type Sale = {
@@ -23,6 +24,10 @@ const Ventas = () => {
   const [refundSale, setRefundSale] = useState<Sale | null>(null);
   const [refundAmount, setRefundAmount] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  const refundDialogRef = useModal<HTMLDivElement>(refundSale !== null, () =>
+    setRefundSale(null),
+  );
 
   const loadSales = async () => {
     if (!userId) {
@@ -109,12 +114,18 @@ const Ventas = () => {
       </h1>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {error}
         </div>
       )}
       {message && (
-        <div className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+        <div
+          role="status"
+          className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700"
+        >
           {message}
         </div>
       )}
@@ -133,12 +144,18 @@ const Ventas = () => {
           onClick={() => setRefundSale(null)}
         >
           <div
+            ref={refundDialogRef}
             role="dialog"
             aria-modal="true"
-            className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl"
+            aria-labelledby="refund-modal-title"
+            tabIndex={-1}
+            className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl outline-none"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-lg font-semibold text-zinc-900">
+            <h2
+              id="refund-modal-title"
+              className="text-lg font-semibold text-zinc-900"
+            >
               Devolver venta #{refundSale.id}
             </h2>
             <p className="mt-1 text-sm text-zinc-600">
@@ -152,6 +169,7 @@ const Ventas = () => {
               value={refundAmount}
               onChange={(e) => setRefundAmount(e.target.value)}
               placeholder="Monto"
+              aria-label="Monto a devolver"
               className="mt-4 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-zinc-400 focus:ring-2 focus:ring-zinc-200"
             />
 

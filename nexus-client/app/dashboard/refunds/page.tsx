@@ -167,12 +167,14 @@ const Refunds = () => {
           onChange={(e) => setSaleId(e.target.value)}
           type="number"
           placeholder="ID de venta"
+          aria-label="ID de venta"
           className={`${inputClass} w-40`}
         />
         <input
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="Motivo"
+          aria-label="Motivo de la devolución"
           className={`${inputClass} min-w-[200px] flex-1`}
         />
         <button
@@ -182,10 +184,17 @@ const Refunds = () => {
           Solicitar
         </button>
       </div>
-      {createOut && <p className="mb-4 text-sm text-zinc-600">{createOut}</p>}
+      {createOut && (
+        <p role="status" className="mb-4 text-sm text-zinc-600">
+          {createOut}
+        </p>
+      )}
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {error}
         </div>
       )}
@@ -221,6 +230,7 @@ const Refunds = () => {
                 if (e.key === 'Enter') void search();
               }}
               placeholder="Buscar por motivo"
+              aria-label="Buscar devoluciones por motivo"
               className={`${inputClass} min-w-[200px] flex-1`}
             />
             <button

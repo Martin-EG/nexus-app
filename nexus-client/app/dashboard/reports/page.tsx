@@ -143,6 +143,7 @@ const Reportes = () => {
           onChange={(e) => setYear(e.target.value)}
           type="number"
           placeholder="Año"
+          aria-label="Año"
           className={`${inputClass} w-28`}
         />
         <input
@@ -152,6 +153,7 @@ const Reportes = () => {
           min={1}
           max={12}
           placeholder="Mes"
+          aria-label="Mes"
           className={`${inputClass} w-24`}
         />
         <button
@@ -163,7 +165,10 @@ const Reportes = () => {
       </div>
 
       {monthlyError && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {monthlyError}
         </div>
       )}
@@ -190,6 +195,7 @@ const Reportes = () => {
             <select
               value={exportType}
               onChange={(e) => setExportType(e.target.value)}
+              aria-label="Tipo de reporte"
               className={inputClass}
             >
               <option value="sales">Ventas</option>
@@ -199,6 +205,7 @@ const Reportes = () => {
               value={exportFilter}
               onChange={(e) => setExportFilter(e.target.value)}
               placeholder="Filtro"
+              aria-label="Filtro (ID mínimo)"
               className={`${inputClass} w-28`}
             />
             <button

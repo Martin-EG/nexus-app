@@ -134,6 +134,7 @@ const Compras = () => {
         <select
           value={supplierId}
           onChange={(e) => setSupplierId(e.target.value)}
+          aria-label="Proveedor"
           className={inputClass}
         >
           <option value="">Proveedor…</option>
@@ -147,6 +148,7 @@ const Compras = () => {
           value={productId}
           onChange={(e) => setProductId(e.target.value)}
           placeholder="ID de producto"
+          aria-label="ID de producto"
           inputMode="numeric"
           className={`${inputClass} w-36`}
         />
@@ -156,6 +158,7 @@ const Compras = () => {
           type="number"
           min={1}
           placeholder="Cantidad"
+          aria-label="Cantidad"
           className={`${inputClass} w-28`}
         />
         <input
@@ -165,12 +168,14 @@ const Compras = () => {
           min={0}
           step="0.01"
           placeholder="Costo unitario"
+          aria-label="Costo unitario"
           className={`${inputClass} w-36`}
         />
         <input
           value={receivedDate}
           onChange={(e) => setReceivedDate(e.target.value)}
           type="date"
+          aria-label="Fecha de recepción"
           className={inputClass}
         />
         <button
@@ -183,12 +188,18 @@ const Compras = () => {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {error}
         </div>
       )}
       {message && (
-        <div className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+        <div
+          role="status"
+          className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700"
+        >
           {message}
         </div>
       )}

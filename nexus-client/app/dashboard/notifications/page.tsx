@@ -159,7 +159,10 @@ const Notifications = () => {
       <p className="mb-6 text-sm text-zinc-500">No leídas: {unread}</p>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {error}
         </div>
       )}
@@ -191,11 +194,13 @@ const Notifications = () => {
               value={broadcastMsg}
               onChange={(e) => setBroadcastMsg(e.target.value)}
               placeholder="Mensaje"
+              aria-label="Mensaje de difusión"
               className={`${inputClass} min-w-[200px] flex-1`}
             />
             <select
               value={broadcastKind}
               onChange={(e) => setBroadcastKind(e.target.value)}
+              aria-label="Tipo de notificación"
               className={inputClass}
             >
               {KINDS.map((kind) => (
@@ -226,11 +231,13 @@ const Notifications = () => {
             value={createMsg}
             onChange={(e) => setCreateMsg(e.target.value)}
             placeholder="Mensaje"
+            aria-label="Mensaje de la notificación"
             className={`${inputClass} min-w-[200px] flex-1`}
           />
           <select
             value={createKind}
             onChange={(e) => setCreateKind(e.target.value)}
+            aria-label="Tipo de notificación"
             className={inputClass}
           >
             {KINDS.slice(0, 3).map((kind) => (

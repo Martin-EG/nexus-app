@@ -43,4 +43,13 @@ Ahora pase al proyecto de frontend, para la migracion utilizaremos NextJS que ya
 En proceso de migrar cada pagina, para los estilos considere utiliar tailwind asi podemos darle estilos mas estandares, a futuro se puede considerar generar un paquete de estilos propios para no depender de una libreria de terceros.
 
 **20/05/26 5:55 am**
-Finalizando de migrar todas las paginas, ciertos componentes que se repetian fueron movidos a sus propios ficheros, como Header, Table, asi como un nuevo middleware que checa si el usuario es admin para renderizar cierta seccion sin tener que estar llamando el bucket de zustand en cada archivo.
+Finalizando de migrar todas las paginas, ciertos componentes que se repetian fueron movidos a sus propios ficheros, como Header, Table, asi como un nuevo middleware que checa si el usuario es admin para renderizar cierta seccion sin 
+tener que estar llamando el bucket de zustand en cada archivo.
+
+**20/05/26 6:07 am** 
+Una vez finalizado el desarrollo, continuo validando que la aplicacion cuente con el standard de a11y, para esto me apoyo de Claude code para hacer el proceso mas rapido. 
+
+```
+Claude prompt
+I need to validate accessibility is in order, specially for inputs and interactive components, review all pages looking for validate accessibility is in place, when you find anything wrong, fix it.
+```

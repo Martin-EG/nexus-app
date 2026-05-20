@@ -105,6 +105,7 @@ const Cart = () => {
           value={pid}
           onChange={(e) => setPid(e.target.value)}
           placeholder="ID de producto"
+          aria-label="ID de producto"
           inputMode="numeric"
           className={`${inputClass} w-40`}
         />
@@ -114,6 +115,7 @@ const Cart = () => {
           type="number"
           min={1}
           placeholder="Cantidad"
+          aria-label="Cantidad"
           className={`${inputClass} w-32`}
         />
         <button
@@ -125,12 +127,18 @@ const Cart = () => {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {error}
         </div>
       )}
       {message && (
-        <div className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+        <div
+          role="status"
+          className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700"
+        >
           {message}
         </div>
       )}

@@ -103,11 +103,13 @@ const Exportes = () => {
           value={pivotYear}
           onChange={(e) => setPivotYear(e.target.value)}
           type="number"
+          aria-label="Año del pivot"
           className={`${inputClass} w-28`}
         />
         <select
           value={dimA}
           onChange={(e) => setDimA(e.target.value)}
+          aria-label="Dimensión A"
           className={inputClass}
         >
           <option value="customer_type">customer_type</option>
@@ -117,6 +119,7 @@ const Exportes = () => {
         <select
           value={dimB}
           onChange={(e) => setDimB(e.target.value)}
+          aria-label="Dimensión B"
           className={inputClass}
         >
           <option value="category">category</option>
@@ -129,7 +132,10 @@ const Exportes = () => {
       </div>
 
       {pivotError && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {pivotError}
         </div>
       )}
@@ -142,12 +148,14 @@ const Exportes = () => {
             value={totalsYear}
             onChange={(e) => setTotalsYear(e.target.value)}
             type="number"
+            aria-label="Año de los totales"
             className={`${inputClass} w-28`}
           />
           <input
             value={totalsCt}
             onChange={(e) => setTotalsCt(e.target.value)}
             placeholder="customer_type (opcional)"
+            aria-label="Tipo de cliente (opcional)"
             className={inputClass}
           />
           <button onClick={() => void loadTotals()} className={buttonClass}>
@@ -171,6 +179,7 @@ const Exportes = () => {
               value={csvCustomerType}
               onChange={(e) => setCsvCustomerType(e.target.value)}
               placeholder="customer_type (opcional)"
+              aria-label="Tipo de cliente (opcional)"
               className={`${inputClass} min-w-[200px] flex-1`}
             />
             <button onClick={() => void downloadCsv()} className={buttonClass}>

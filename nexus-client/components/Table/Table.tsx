@@ -8,6 +8,7 @@ const Table = ({ columns, data }: { columns: string[]; data: any[] }) => {
           {columns.map((col) => (
             <th
               key={col}
+              scope="col"
               className="border border-zinc-200 bg-zinc-100 px-4 py-2 text-left text-sm font-medium text-zinc-700"
             >
               {col}

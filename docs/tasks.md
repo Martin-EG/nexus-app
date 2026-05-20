@@ -25,5 +25,5 @@
 - ~~Create dashboard page~~
 - ~~Separate Header into its own component and render it with layout.tsx~~
 
-- Check a11y in critical components (inputs and interactive components).
+- ~~Check a11y in critical components (inputs and interactive components).~~
 - Add Unit tests for each component.

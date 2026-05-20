@@ -109,6 +109,7 @@ const Catalogo = () => {
             if (e.key === 'Enter') void search();
           }}
           placeholder="Buscar por nombre"
+          aria-label="Buscar productos por nombre"
           className="min-w-[200px] flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-200"
         />
         <button
@@ -126,7 +127,10 @@ const Catalogo = () => {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+        <div
+          role="alert"
+          className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
           {error}
         </div>
       )}

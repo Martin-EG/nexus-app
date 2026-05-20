@@ -1,5 +1,7 @@
 'use client';
 
+import { useModal } from '@/lib/use-modal';
+
 type ConfirmModalProps = {
   open: boolean;
   title: string;
@@ -19,6 +21,8 @@ const ConfirmModal = ({
   onConfirm,
   onCancel,
 }: ConfirmModalProps) => {
+  const dialogRef = useModal<HTMLDivElement>(open, onCancel);
+
   if (!open) return null;
 
   return (
@@ -27,13 +31,24 @@ const ConfirmModal = ({
       onClick={onCancel}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl"
+        aria-labelledby="confirm-modal-title"
+        aria-describedby="confirm-modal-message"
+        tabIndex={-1}
+        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl outline-none"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-lg font-semibold text-zinc-900">{title}</h2>
-        <p className="mt-2 text-sm text-zinc-600">{message}</p>
+        <h2
+          id="confirm-modal-title"
+          className="text-lg font-semibold text-zinc-900"
+        >
+          {title}
+        </h2>
+        <p id="confirm-modal-message" className="mt-2 text-sm text-zinc-600">
+          {message}
+        </p>
 
         <div className="mt-6 flex justify-end gap-2">
           <button
