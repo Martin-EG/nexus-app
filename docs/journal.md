@@ -53,3 +53,6 @@ Una vez finalizado el desarrollo, continuo validando que la aplicacion cuente co
 Claude prompt
 I need to validate accessibility is in order, specially for inputs and interactive components, review all pages looking for validate accessibility is in place, when you find anything wrong, fix it.
 ```
+
+**20/05/26 6:44 am**
+Para finalizar con frontend cree los archivos Readme.md tanto del proyecto de frontend como el general y agregue las pruebas unitarias para los componentes y paginas, con ayuda de Claude, configure y rapidamente realice los archivos de pruebas unitarias en lo que continuaba revisando que todo funcionara como deberia.

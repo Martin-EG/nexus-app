@@ -96,6 +96,26 @@ running and reachable at `API_URL`.
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run lint` | Lint with ESLint |
+| `npm test` | Run the Jest unit tests |
+| `npm run test:watch` | Run the tests in watch mode |
+
+## Testing
+
+Unit tests use [Jest](https://jestjs.io/) with
+[React Testing Library](https://testing-library.com/), wired up via
+`next/jest`. Every page and component has a co-located `*.test.tsx` file.
+
+`next/navigation` and `next-auth/react` are mocked globally in
+[`jest.setup.ts`](jest.setup.ts); shared fetch/user helpers live in
+[`test-utils.ts`](test-utils.ts).
+
+```bash
+npm test            # run the full suite
+npm run test:watch  # re-run on change
+```
+
+> `app/page.tsx` is an `async` Server Component — Jest cannot render those, so
+> its redirect logic is covered by invoking the function directly.
 
 ## How it works
 
