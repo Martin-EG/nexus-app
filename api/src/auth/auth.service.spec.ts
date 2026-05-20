@@ -19,7 +19,10 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
-        { provide: getRepositoryToken(User), useValue: usersRepository },
+        { 
+          provide: getRepositoryToken(User),
+          useValue: usersRepository
+        },
       ],
     }).compile();
 
