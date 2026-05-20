@@ -4,6 +4,22 @@ import { useUserStore } from '@/data/user';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
+const navLinks = [
+  { href: '/', label: 'Inicio' },
+  { href: '/catalogo', label: 'Catálogo' },
+  { href: '/inventario', label: 'Inventario' },
+  { href: '/carrito', label: 'Carrito' },
+  { href: '/ventas', label: 'Ventas' },
+  { href: '/compras', label: 'Compras' },
+  { href: '/reportes', label: 'Reportes' },
+  { href: '/notificaciones', label: 'Notificaciones' },
+  { href: '/devoluciones', label: 'Devoluciones' },
+  { href: '/exportes', label: 'Exportes' },
+];
+
+const linkClass =
+  'rounded-md px-3 py-1.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900';
+
 const Header = () => {
   const { is_admin } = useUserStore((state) => state.user);
 
@@ -12,30 +28,33 @@ const Header = () => {
     signOut({ callbackUrl: '/login' });
   };
 
-  const adminReportsPage = is_admin ? (
-    <Link href="/reports?admin=true">
-      Admin
-    </Link>
-  ) : null;
-  
   return (
-    <header>
-        <Link href="/">Inicio</Link>
-        <Link href="/catalogo">Catálogo</Link>
-        <Link href="/inventario">Inventario</Link>
-        <Link href="/carrito">Carrito</Link>
-      <Link href="/ventas">Ventas</Link>
-      <Link href="/compras">Compras</Link>
-      <Link href="/reportes">Reportes</Link>
-      <Link href="/notificaciones">Notificaciones</Link>
-      <Link href="/devoluciones">Devoluciones</Link>
-      <Link href="/exportes">Exportes</Link>
-      {adminReportsPage}
-      <Link href="#" onClick={logout} style={{ float: 'right' }}>
-        Salir
-      </Link>
+    <header className="border-b border-zinc-200 bg-white">
+      <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-1 px-6 py-3">
+        {navLinks.map((link) => (
+          <Link key={link.href} href={link.href} className={linkClass}>
+            {link.label}
+          </Link>
+        ))}
+
+        {is_admin && (
+          <Link
+            href="/reports?admin=true"
+            className="rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50"
+          >
+            Admin
+          </Link>
+        )}
+
+        <button
+          onClick={logout}
+          className="ml-auto rounded-md px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+        >
+          Salir
+        </button>
+      </nav>
     </header>
-  )
+  );
 };
 
 export default Header;
