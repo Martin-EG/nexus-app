@@ -41,3 +41,6 @@ Ahora pase al proyecto de frontend, para la migracion utilizaremos NextJS que ya
 
 **20/05/26 4:22am**
 En proceso de migrar cada pagina, para los estilos considere utiliar tailwind asi podemos darle estilos mas estandares, a futuro se puede considerar generar un paquete de estilos propios para no depender de una libreria de terceros.
+
+**20/05/26 5:55 am**
+Finalizando de migrar todas las paginas, ciertos componentes que se repetian fueron movidos a sus propios ficheros, como Header, Table, asi como un nuevo middleware que checa si el usuario es admin para renderizar cierta seccion sin tener que estar llamando el bucket de zustand en cada archivo.
