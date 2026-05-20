@@ -33,3 +33,6 @@ Agregamos un README.md a nuestro proyecto de backend.
 ```
 Create a readme .md file for API folder, what makes the project, structure, how to make it run, needed data (without making keys visible), useful scripts like npm run start:dev and npm run test
 ```
+
+**20/05/26 2:55am**
+Pasamos a nuestro frontend folder, para nuestra migracion utilizaremos NextJS

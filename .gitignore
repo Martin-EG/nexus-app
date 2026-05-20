@@ -5,5 +5,11 @@ api/dist
 api/build
 api/.env.local
 
+nexus-client/node_modules
+nexus-client/dist
+nexus-client/.env.local
+nexus-client/.next
+
+
 node_modules
 dist
